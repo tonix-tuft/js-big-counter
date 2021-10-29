@@ -27,10 +27,21 @@ import Decimal from "@agrora/decimal";
 import { MAX_SAFE_INTEGER } from "./constants";
 
 export default class JSBigCounter {
+  /**
+   * Construct a new big counter.
+   *
+   * @param {number} initialValue The initial value (an integer greater than or equal to 0).
+   *                              A negative integer (less than 0), will create a big counter with 0 as its initial counter's value.
+   */
   constructor(initialValue = 0) {
     this.bigCounterArray = [initialValue >= 0 ? initialValue : 0];
   }
 
+  /**
+   * Increment the big counter by 1.
+   *
+   * @return {undefined}
+   */
   increment() {
     let currentBucketPos = 0;
     while (this.bigCounterArray[currentBucketPos] === MAX_SAFE_INTEGER) {
@@ -43,6 +54,11 @@ export default class JSBigCounter {
     this.bigCounterArray[currentBucketPos]++;
   }
 
+  /**
+   * Decrement the big counter by 1.
+   *
+   * @return {undefined}
+   */
   decrement() {
     if (this.bigCounterArray[0] > 0) {
       this.bigCounterArray[0]--;
@@ -68,6 +84,11 @@ export default class JSBigCounter {
     }
   }
 
+  /**
+   * Returns a string representing the integer value of the big counter.
+   *
+   * @return {string} The integer string representing the integer value of the big counter.
+   */
   toString() {
     const baseDecimal = Decimal.from(MAX_SAFE_INTEGER).add(1);
     let basePowerDecimal = Decimal.from(baseDecimal);
@@ -85,7 +106,21 @@ export default class JSBigCounter {
     return decimal.toString();
   }
 
+  /**
+   * Compares this big counter with another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {number} The return value can be:
+   *
+   *                      - 1 if this big counter is greater than the given big counter;
+   *                      - 0 if they are equal;
+   *                      - 1 if this big counter is less than the given big counter;
+   *
+   */
   compareTo(bigCounter) {
+    if (this === bigCounter) {
+      return 0;
+    }
     const l1 = this.bigCounterArray.length;
     const l2 = bigCounter.bigCounterArray.length;
     if (l1 > l2) {
@@ -105,10 +140,72 @@ export default class JSBigCounter {
     return 0;
   }
 
+  /**
+   * Tests whether this big counter is equal to another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {boolean} True this big counter is equal to the given big counter.
+   */
+  isEqualTo(bigCounter) {
+    return this.compareTo(bigCounter) === 0;
+  }
+
+  /**
+   * Tests whether this big counter is greater than another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {boolean} True this big counter is greater than the given big counter.
+   */
+  isGreaterThan(bigCounter) {
+    return this.compareTo(bigCounter) > 0;
+  }
+
+  /**
+   * Tests whether this big counter is less than another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {boolean} True this big counter is less than the given big counter.
+   */
+  isLessThan(bigCounter) {
+    return this.compareTo(bigCounter) < 0;
+  }
+
+  /**
+   * Tests whether this big counter is greater than or equal to another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {boolean} True this big counter is greater than or equal to the given big counter.
+   */
+  isGreaterThanOrEqualTo(bigCounter) {
+    return this.isGreaterThan(bigCounter) || this.isEqualTo(bigCounter);
+  }
+
+  /**
+   * Tests whether this big counter is less than or equal to another given big counter.
+   *
+   * @param {JSBigCounter} bigCounter Another big counter.
+   * @return {boolean} True this big counter is less than or equal to the given big counter.
+   */
+  isLessThanOrEqualTo(bigCounter) {
+    return this.isLessThan(bigCounter) || this.isEqualTo(bigCounter);
+  }
+
+  /**
+   * Static method to serialize a big counter to JSON.
+   *
+   * @param {JSBigCounter} bigCounter A big counter.
+   * @return {string} The JSON representing the given big counter.
+   */
   static toJSON(bigCounter) {
     return JSON.stringify({ bigCounterArray: bigCounter.bigCounterArray });
   }
 
+  /**
+   * Static method to unserialize a big counter from its JSON representation.
+   *
+   * @param {string} json A big counter JSON representation, previously returned by `JSBigCounter.toJSON`.
+   * @return {JSBigCounter} The unserialized big counter.
+   */
   static fromJSON(json) {
     const parsed = JSON.parse(json);
     const bigCounter = new JSBigCounter();
