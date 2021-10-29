@@ -1,3 +1,5 @@
+const plugins = ["@typescript-eslint", "jest"];
+
 module.exports = {
   parser: "@typescript-eslint/parser",
   env: {
@@ -22,7 +24,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint"],
+  plugins,
   rules: {
     "no-unused-vars": ["error", { ignoreRestSiblings: true }],
     "no-console": "error",
@@ -39,6 +41,7 @@ module.exports = {
     "@typescript-eslint/indent": "off",
     "template-curly-spacing": ["off"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "prefer-const": "error",
   },
   overrides: [
     {
@@ -48,6 +51,12 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-unused-vars": ["error"],
       },
+    },
+    {
+      files: ["**/*.test.js"],
+      env: { "jest/globals": true },
+      plugins,
+      extends: ["plugin:jest/recommended"],
     },
   ],
 };

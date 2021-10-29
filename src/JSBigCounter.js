@@ -30,11 +30,28 @@ export default class JSBigCounter {
   /**
    * Construct a new big counter.
    *
-   * @param {number} initialValue The initial value (an integer greater than or equal to 0).
-   *                              A negative integer (less than 0), will create a big counter with 0 as its initial counter's value.
+   * @param {number|number[]} initialValue The initial value (an integer greater than or equal to 0) or an array of integers greater than or equal to 0.
+   *                                       A negative integer (less than 0) will be normalized to 0.
    */
   constructor(initialValue = 0) {
-    this.bigCounterArray = [initialValue >= 0 ? initialValue : 0];
+    let bigCounterArray;
+    if (Object.prototype.hasOwnProperty.call(initialValue, "length")) {
+      bigCounterArray = initialValue.map(value => (value >= 0 ? value : 0));
+    } else {
+      bigCounterArray = [initialValue >= 0 ? initialValue : 0];
+    }
+    this.bigCounterArray = bigCounterArray;
+
+    if (!this.bigCounterArray.length) {
+      this.bigCounterArray = [0];
+    }
+
+    if (
+      this.bigCounterArray.length > 1 &&
+      !this.bigCounterArray[this.bigCounterArray.length - 1]
+    ) {
+      this.bigCounterArray[this.bigCounterArray.length - 1] = 1;
+    }
   }
 
   /**
@@ -48,9 +65,11 @@ export default class JSBigCounter {
       this.bigCounterArray[currentBucketPos] = 0;
       currentBucketPos++;
     }
+
     if (!this.bigCounterArray[currentBucketPos]) {
       this.bigCounterArray[currentBucketPos] = 0;
     }
+
     this.bigCounterArray[currentBucketPos]++;
   }
 
@@ -67,6 +86,7 @@ export default class JSBigCounter {
         // 0 is the minimum value of the big counter (no negative counters for now).
         return;
       }
+
       this.bigCounterArray[0] = MAX_SAFE_INTEGER;
       let currentBucketPos = 1;
       while (this.bigCounterArray[currentBucketPos] === 0) {
@@ -121,6 +141,7 @@ export default class JSBigCounter {
     if (this === bigCounter) {
       return 0;
     }
+
     const l1 = this.bigCounterArray.length;
     const l2 = bigCounter.bigCounterArray.length;
     if (l1 > l2) {
@@ -128,6 +149,7 @@ export default class JSBigCounter {
     } else if (l2 > l1) {
       return -1;
     }
+
     for (let i = l1; i >= 0; i--) {
       const bucket1 = this.bigCounterArray[i];
       const bucket2 = bigCounter.bigCounterArray[i];

@@ -24,7 +24,8 @@
     "url": "https://github.com/tonix-tuft/js-big-counter.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
     "watch": "WEBPACK_ENV=watch webpack --progress --color --watch",
     "mkdir-build": "mkdir -p ./dist/es6",
     "clear-build": "find ./dist ! -name '.gitignore' -type f -exec rm -f {} +",
@@ -35,7 +36,12 @@
     "publish-patch": "npm run build-all && npm version patch && npm run publish-git",
     "publish-minor": "npm run build-all && npm version minor && npm run publish-git",
     "publish-major": "npm run build-all && npm version major && npm run publish-git",
-    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./dist/es6 --source-maps --copy-files"
+    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./dist/es6 --source-maps --copy-files --no-copy-ignored"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
@@ -47,12 +53,17 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/traverse": "^7.11.5",
     "@babel/types": "^7.11.5",
+    "@types/jest": "^27.0.2",
     "@types/node": "^13.13.21",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
+    "babel-jest": "^27.3.1",
     "babel-loader": "^8.1.0",
     "eslint": "^7.32.0",
+    "eslint-plugin-jest": "^25.2.2",
     "eslint-webpack-plugin": "^3.0.1",
+    "jest": "^27.3.1",
+    "jest-cli": "^27.3.1",
     "minimist": ">=1.2.3",
     "serialize-javascript": "^5.0.1",
     "terser-webpack-plugin": "^3.1.0",
