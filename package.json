@@ -1,6 +1,6 @@
 {
   "name": "js-big-counter",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Big integer/arbitrary-length counter for JavaScript.",
   "keywords": [
     "counter",
