@@ -281,6 +281,11 @@ test("compareTo works", () => {
   bigCounter2 = bigCounter1;
   expect(bigCounter2.compareTo(bigCounter1)).toEqual(0);
   expect(bigCounter1.compareTo(bigCounter2)).toEqual(0);
+
+  bigCounter1 = new JSBigCounter([9, 8, 3290, 321890, 2, 3]);
+  bigCounter2 = new JSBigCounter([9, 8, 3290, 321890, 1, 1, 3]);
+  expect(bigCounter2.compareTo(bigCounter1)).toEqual(1);
+  expect(bigCounter1.compareTo(bigCounter2)).toEqual(-1);
 });
 
 test("isEqualTo works", () => {
