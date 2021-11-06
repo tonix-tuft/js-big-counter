@@ -408,3 +408,11 @@ test("getBigCounterArrayCopy indeed returns a copy", () => {
     2,
   ]);
 });
+
+test("isBigCounter works", () => {
+  const bigCounter = new JSBigCounter([5, 89, 78, Number.MAX_SAFE_INTEGER, 2]);
+  expect(JSBigCounter.isBigCounter(bigCounter)).toBe(true);
+  expect(JSBigCounter.isBigCounter([])).toBe(false);
+  expect(JSBigCounter.isBigCounter({})).toBe(false);
+  expect(JSBigCounter.isBigCounter(123)).toBe(false);
+});

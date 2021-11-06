@@ -26,6 +26,11 @@
 import Decimal from "@agrora/decimal";
 import { MAX_SAFE_INTEGER } from "./constants";
 
+/**
+ * @type {string}
+ */
+const TAG = "JSBigCounterFymlE7h0SJuXzVzbKt1J";
+
 export default class JSBigCounter {
   /**
    * Construct a new big counter.
@@ -52,6 +57,7 @@ export default class JSBigCounter {
     ) {
       this.bigCounterArray[this.bigCounterArray.length - 1] = 1;
     }
+    this[TAG] = true;
   }
 
   /**
@@ -242,5 +248,15 @@ export default class JSBigCounter {
     const bigCounter = new JSBigCounter();
     bigCounter.bigCounterArray = parsed.bigCounterArray;
     return bigCounter;
+  }
+
+  /**
+   * Tests whether the parameter is a big counter.
+   *
+   * @param {*} maybeBigCounter A value that can be a big counter.
+   * @return {boolean} True if the given value is a big counter, false otherwise.
+   */
+  static isBigCounter(maybeBigCounter) {
+    return !!(maybeBigCounter && maybeBigCounter[TAG]);
   }
 }
