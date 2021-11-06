@@ -386,3 +386,14 @@ test("fromJSON works", () => {
   expect(parsed.bigCounterArray).toEqual([0, 0, 0, 0, 0, 1]);
   expect(parsed.isEqualTo(new JSBigCounter([0, 0, 0, 0, 0, 1]))).toBe(true);
 });
+
+test("getBigCounterArrayCopy works", () => {
+  const bigCounter = new JSBigCounter([5, 89, 78, Number.MAX_SAFE_INTEGER, 2]);
+  expect(bigCounter.getBigCounterArrayCopy()).toEqual([
+    5,
+    89,
+    78,
+    Number.MAX_SAFE_INTEGER,
+    2,
+  ]);
+});
