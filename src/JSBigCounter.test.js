@@ -416,3 +416,17 @@ test("isBigCounter works", () => {
   expect(JSBigCounter.isBigCounter({})).toBe(false);
   expect(JSBigCounter.isBigCounter(123)).toBe(false);
 });
+
+test("copy works", () => {
+  const bigCounter = new JSBigCounter([5, 89, 78, Number.MAX_SAFE_INTEGER, 2]);
+  const bigCounterCopy = bigCounter.copy();
+  expect(bigCounterCopy.bigCounterArray).toEqual([
+    5,
+    89,
+    78,
+    Number.MAX_SAFE_INTEGER,
+    2,
+  ]);
+  expect(bigCounter).toBe(bigCounter);
+  expect(bigCounterCopy).not.toBe(bigCounter);
+});

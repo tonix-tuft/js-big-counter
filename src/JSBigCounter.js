@@ -228,6 +228,15 @@ export default class JSBigCounter {
   }
 
   /**
+   * Returns a copy of this big counter.
+   *
+   * @return {JSBigCounter} A copy of this big counter.
+   */
+  copy() {
+    return new JSBigCounter(this.getBigCounterArrayCopy());
+  }
+
+  /**
    * Static method to serialize a big counter to JSON.
    *
    * @param {JSBigCounter} bigCounter A big counter.
