@@ -435,3 +435,14 @@ test("getBigCounterArray works", () => {
   const bigCounter = new JSBigCounter([5, 89, 78, Number.MAX_SAFE_INTEGER, 2]);
   expect(bigCounter.getBigCounterArray()).toBe(bigCounter.bigCounterArray);
 });
+
+test("big counter can be constructed from another big counter", () => {
+  const bigCounter = new JSBigCounter([1, 2, 3, 4]);
+  const anotherBigCounter = new JSBigCounter(bigCounter);
+  expect(anotherBigCounter.isEqualTo(bigCounter)).toBe(true);
+  expect(anotherBigCounter.isEqualTo(bigCounter)).toBe(true);
+  expect(anotherBigCounter).not.toBe(bigCounter);
+  expect(anotherBigCounter.getBigCounterArray()).not.toBe(
+    bigCounter.getBigCounterArray()
+  );
+});

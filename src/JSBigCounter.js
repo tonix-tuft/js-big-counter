@@ -35,10 +35,15 @@ export default class JSBigCounter {
   /**
    * Construct a new big counter.
    *
-   * @param {number|number[]} initialValue The initial value (an integer greater than or equal to 0) or an array of integers greater than or equal to 0.
-   *                                       A negative integer (less than 0) will be normalized to 0.
+   * @param {number|number[]|JSBigCounter} initialValue The initial value (an integer greater than or equal to 0) or an array of integers greater than or equal to 0
+   *                                                    or another {@link JSBigCounter} instance big counter instance.
+   *                                                    A negative integer (less than 0) will be normalized to 0.
    */
   constructor(initialValue = 0) {
+    if (JSBigCounter.isBigCounter(initialValue)) {
+      return new JSBigCounter(initialValue.getBigCounterArrayCopy());
+    }
+
     let bigCounterArray;
     if (Object.prototype.hasOwnProperty.call(initialValue, "length")) {
       bigCounterArray = initialValue.map(value => (value >= 0 ? value : 0));
