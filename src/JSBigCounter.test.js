@@ -430,3 +430,8 @@ test("copy works", () => {
   expect(bigCounter).toBe(bigCounter);
   expect(bigCounterCopy).not.toBe(bigCounter);
 });
+
+test("getBigCounterArray works", () => {
+  const bigCounter = new JSBigCounter([5, 89, 78, Number.MAX_SAFE_INTEGER, 2]);
+  expect(bigCounter.getBigCounterArray()).toBe(bigCounter.bigCounterArray);
+});

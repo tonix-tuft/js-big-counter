@@ -228,6 +228,19 @@ export default class JSBigCounter {
   }
 
   /**
+   * Returns a reference to the internal big counter array used by this big counter.
+   *
+   * Note that the returned array should not be mutated otherwise it will change the big counter itself.
+   *
+   * For a mutable copy of the internal big counter array the {@link getBigCounterArrayCopy} method should be used.
+   *
+   * @return {number[]} The big counter array.
+   */
+  getBigCounterArray() {
+    return this.bigCounterArray;
+  }
+
+  /**
    * Returns a copy of this big counter.
    *
    * @return {JSBigCounter} A copy of this big counter.
